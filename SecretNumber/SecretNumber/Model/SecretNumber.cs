@@ -8,13 +8,17 @@ namespace SecretNumber.Model
 {
     public class SecretNumber
     {
+        //Hemligt nummer sparas i detta fält
         private int _number;
 
+        //Lista som innehåller alla tidigare gissningar
         private List<int> _previousGuesses;
 
+        //Konstant som anger maximala antalet gissningar
         private const int MaxNumberOfGuesses = 7;
 
 
+        //Egenskap som returnerar huruvida användaren kan göra fler gissningar eller inte
         public bool CanMakeGuess 
         { 
             get
@@ -30,11 +34,12 @@ namespace SecretNumber.Model
             }
         }
 
+        //Egneskap som returnerar hur många gissningar som gjorts.
         public int Count 
         { 
             get
             {
-                int c = 0;
+                int c = 1;
 
                 foreach(int i in PreviousGuesses)
                 {
@@ -45,6 +50,7 @@ namespace SecretNumber.Model
             }
         }
 
+        //Egenskap som returnerar det hemliga talet, OM det inte går att göra fler gissningar.
         public int? Number 
         { 
             get
@@ -60,8 +66,10 @@ namespace SecretNumber.Model
             }
         }
 
+        //Egenskap av enum-typen Outcome som håller koll på senaste gissningens status.
         public Outcome Outcome { get; set; }
 
+        //Egenskap som gör att tidigare gissningar bli läsbara utifrån objektet.
         public ReadOnlyCollection<int> PreviousGuesses
         {
             get
@@ -71,11 +79,11 @@ namespace SecretNumber.Model
             }
         }
 
+        //Metod som initierar ett spel genom att slumpa fram ett nytt tal, och sätter Outcome till Indefinite.
         public void Initialize()
         {            
             Random rnd = new Random();
             
-            //Ska eventuellt gå via egenskapen Number ist eller på något sätt validera skiten.
             _number = rnd.Next(1, 100);
 
             _previousGuesses.Clear();
@@ -83,8 +91,11 @@ namespace SecretNumber.Model
             Outcome = Model.Outcome.Indefinite;
         }
 
+        //Metod som anropas när användare gör en gissning. Sätter enum-typen Outcome till rätt status beroende på gissning.
         public Outcome MakeGuess(int guess)
         {
+            bool guessExcisits = false;
+
             if (guess < 1 || guess > 100)
             {
                 throw new ArgumentOutOfRangeException();
@@ -106,8 +117,7 @@ namespace SecretNumber.Model
                         Outcome = Model.Outcome.Correct;
                     }
 
-                    bool guessExcisits = false;
-
+                    //Loopar igenom alla tidigare gissningar för att se om det gissade talet tidigare har gissats på.
                     foreach (int i in PreviousGuesses)
                     {
                         if (i == guess)
@@ -117,36 +127,35 @@ namespace SecretNumber.Model
                             break;
                         }
                     }
-
-                    if (!guessExcisits)
-                    {
-                        _previousGuesses.Add(guess);
-                    }
                 }
                 else
                 {
                     Outcome = Model.Outcome.NoMoreGuesses;
+                }
+
+                //Om gissningen inte gissats på tidigare.
+                if (!guessExcisits)
+                {
+                    //Ytterliggare ett element läggs till listan som håller kolla på tidigare gissninger och lägger gissningens värde i detta sista element.
+                    _previousGuesses.Add(guess);
                 }
             }
 
             return Outcome;
         }
 
+        //Konstruktor
         public SecretNumber()
         {
-            //Slumpa tal
-            //Skapa list-objekt med sju element som ska innehålla gjorda gissningar.
-            //Anropar initialize?
-
-            //osäker på om den verkligen skapar 7 element. men låt gå. möjligtvis noll-determinerad.
+            //Lista för tidigare gissningar skapas.
             _previousGuesses = new List<int>();
+
+            //Initialize anropas
             Initialize();
-
         }
-
-
     }
 
+    //Enum-typ som är till för att hålla koll på senaste gissningens status.
     public enum Outcome
     {
         Indefinite,
@@ -156,5 +165,4 @@ namespace SecretNumber.Model
         NoMoreGuesses,
         PreviousGuess
     }
-
 }

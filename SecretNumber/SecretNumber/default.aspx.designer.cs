@@ -85,24 +85,6 @@ namespace SecretNumber {
         protected global::System.Web.UI.WebControls.Label GuessedNumbTxt;
         
         /// <summary>
-        /// LastGuessedTxt control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LastGuessedTxt;
-        
-        /// <summary>
-        /// StatusImage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image StatusImage;
-        
-        /// <summary>
         /// ResultTxt control.
         /// </summary>
         /// <remarks>
