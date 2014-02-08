@@ -9,22 +9,88 @@ namespace SecretNumber
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
+        private Model.SecretNumber Game
+        {
+            get
+            {
+                if (Session["game"] == null)
+                {
+                    Session["game"] = new Model.SecretNumber();
+                    return (Model.SecretNumber)Session["game"];
+                }
+                else
+                {
+                    return (Model.SecretNumber)Session["game"];
+                }
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            //få ut ett slumpat hemligt tal
+
         }
 
         protected void GuessButton_Click(object sender, EventArgs e)
         {
-            //Jämföra gissat tal med sparade tal
-            //Ev skriva ut lämpligt meddelande
             //låsa fält och knappar om rätt gissning gjorts eller om gissningar är slut
+            
+            if(IsValid)
+            {
+                //Ta in gissning från textbox
+                int guess = int.Parse(GuessInput.Text);
+
+                Model.Outcome status = Game.MakeGuess(guess);
+
+                if(status == Model.Outcome.Low)
+                {
+                    ResultTxt.Text = "Gissningen var för låg";   
+                }
+                else if(status == Model.Outcome.High)
+                {
+                    ResultTxt.Text = "Gissningen var för hög";
+                }
+                else if(status == Model.Outcome.Correct)
+                {
+                    ResultTxt.Text = String.Format("Grattis du gissade på rätt tal! Det tog dig {0} gissningar!", Game.Count);
+
+                    //Lås fält.
+                    GuessInput.Enabled = false;
+                    GuessButton.Enabled = false;
+                }
+                else if(status == Model.Outcome.PreviousGuess)
+                {
+                    ResultTxt.Text = "Gissningen var på ett tidigafe gissat tal. Gör om gissningen";
+                }
+
+                //Måste stå någon annan satans. koden når aldrig hit.
+                if(status == Model.Outcome.NoMoreGuesses)
+                {
+                    FinalResultTxt.Text = String.Format("Du har tyvär inga gissningar kvar! Det hemliga talet var: {0}", Game.Number);
+
+                    //Lås fält.
+                    GuessInput.Enabled = false;
+                    GuessButton.Enabled = false;
+                }
+
+                string str = null;
+
+                //Skriv ut alla gissade tal
+                foreach(int i in Game.PreviousGuesses)
+                {
+                    str += string.Format("{0} ", i.ToString());
+                }
+
+                //Gör sen så att sista numret visas fetstilat för sig själv.
+                GuessedNumbTxt.Text = str;
+                
+            }
+            //else???
         }
 
         protected void NewGameButton_Click(object sender, EventArgs e)
         {
-            //få ut nytt slumpat hemligt tal.
-
+            Session.Clear();
+            Response.Redirect("default.aspx");
         }
     }
 }
