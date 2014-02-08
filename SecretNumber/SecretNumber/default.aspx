@@ -14,7 +14,7 @@
         <asp:Label ID="InstructionText" runat="server" Text="Ange ett tal mellan 1-100: "></asp:Label>
         <asp:TextBox ID="GuessInput" runat="server"></asp:TextBox>
         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" Display="None" runat="server" ErrorMessage="Fältet får inte lämnas tomt!" ControlToValidate="GuessInput"/>
-        <asp:RangeValidator ID="RangeValidator1" runat="server" ErrorMessage="RangeValidator" Type="Integer" MinimumValue="1" MaximumValue="100" Display="None" />
+        <asp:RangeValidator ID="RangeValidator1" runat="server" ErrorMessage="RangeValidator" Type="Integer" MinimumValue="1" MaximumValue="100" Display="None" ControlToValidate="GuessInput" />
         <asp:Button ID="GuessButton" runat="server" Text="Gissa!" OnClick="GuessButton_Click" />
         <asp:Label ID="GuessedNumbTxt" runat="server"></asp:Label>
         <asp:Label ID="LastGuessedTxt" runat="server"></asp:Label>

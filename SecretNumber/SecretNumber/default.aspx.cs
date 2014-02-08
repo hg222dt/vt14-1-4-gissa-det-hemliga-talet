@@ -31,19 +31,17 @@ namespace SecretNumber
         }
 
         protected void GuessButton_Click(object sender, EventArgs e)
-        {
-            //låsa fält och knappar om rätt gissning gjorts eller om gissningar är slut
-            
+        {   
             if(IsValid)
             {
-                //Ta in gissning från textbox
+                //Tar in gissning från textbox
                 int guess = int.Parse(GuessInput.Text);
 
                 Model.Outcome status = Game.MakeGuess(guess);
 
                 if(status == Model.Outcome.Low)
                 {
-                    ResultTxt.Text = "Gissningen var för låg";   
+                    ResultTxt.Text = "Gissningen var för låg";
                 }
                 else if(status == Model.Outcome.High)
                 {
@@ -59,10 +57,9 @@ namespace SecretNumber
                 }
                 else if(status == Model.Outcome.PreviousGuess)
                 {
-                    ResultTxt.Text = "Gissningen var på ett tidigafe gissat tal. Gör om gissningen";
+                    ResultTxt.Text = "Gissningen var på ett tidigare gissat tal. Gör om gissningen";
                 }
 
-                //Måste stå någon annan satans. koden når aldrig hit.
                 if(status == Model.Outcome.NoMoreGuesses)
                 {
                     FinalResultTxt.Text = String.Format("Du har tyvär inga gissningar kvar! Det hemliga talet var: {0}", Game.Number);
@@ -72,7 +69,7 @@ namespace SecretNumber
                     GuessButton.Enabled = false;
                 }
 
-                string str = null;
+                string str = "Gjorda gissningar: ";
 
                 //Skriv ut alla gissade tal
                 foreach(int i in Game.PreviousGuesses)
@@ -81,10 +78,8 @@ namespace SecretNumber
                 }
 
                 //Gör sen så att sista numret visas fetstilat för sig själv.
-                GuessedNumbTxt.Text = str;
-                
+                GuessedNumbTxt.Text = str;   
             }
-            //else???
         }
 
         protected void NewGameButton_Click(object sender, EventArgs e)

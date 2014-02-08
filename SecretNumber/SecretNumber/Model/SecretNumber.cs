@@ -93,15 +93,15 @@ namespace SecretNumber.Model
             {
                 if (CanMakeGuess)
                 {
-                    if (guess < Number)
+                    if (guess < _number)
                     {
                         Outcome = Model.Outcome.Low;
                     }
-                    else if (guess > Number)
+                    else if (guess > _number)
                     {
                         Outcome = Model.Outcome.High;
                     }
-                    else if (guess == Number)
+                    else if (guess == _number)
                     {
                         Outcome = Model.Outcome.Correct;
                     }
